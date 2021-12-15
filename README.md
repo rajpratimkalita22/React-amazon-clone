@@ -22,5 +22,7 @@ Run commands
 
 3) ```yarn run dev```
 
+## Deployed in Vercel
+ react-amazon-clone-sand.vercel.app
 
 
