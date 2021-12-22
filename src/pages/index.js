@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
 
 export default function Home({products}) {
-  return (  // const { products } = props    ...pulling out the prop by destructuring
+  return (  // const { products } = props    ...pulling out the products property from prop object by destructuring
 
     <div className="bg-gray-100">
       <Head>
