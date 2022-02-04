@@ -2,8 +2,8 @@ import { StarIcon } from '@heroicons/react/solid';
 import Currency from "react-currency-formatter";
 import { useDispatch } from 'react-redux';
 import Image from "next/image";
-import { addToBasket, removeFromBasket } from"../slices/basketSlice";
-function CheckoutProduct({id, title, price, rating, description, category, image, hasPrime }) {
+import { addToBasket, removeFromBasket, deleteFromBasket } from"../slices/basketSlice";
+function CheckoutProduct({id, title, price, rating, description, category, image, hasPrime,count }) {
     const dispatch = useDispatch();
 
     const addItemToBasket = () => {
@@ -15,15 +15,21 @@ function CheckoutProduct({id, title, price, rating, description, category, image
             description, 
             category, 
             image, 
-            hasPrime
+            hasPrime,
+            count,
         };
 
         // Push item into redux
         dispatch(addToBasket(product));
     };
 
+    const deleteItemFromBasket = () => {
+        //delete an item out of 2 or 3 from redux
+        dispatch(deleteFromBasket({count, id}))
+    }
+
     const removeItemFromBasket = () => {
-        //remove items from redux
+        //remove a product completety from redux state
         dispatch(removeFromBasket({id}));
     }
     
@@ -45,7 +51,7 @@ function CheckoutProduct({id, title, price, rating, description, category, image
                 <p className="text-xs my-2 line-clamp-3">{description}</p>
                 <div className='flex items-center space-x-4'>
                    <p><Currency quantity={price} currency="INR" /></p>
-                   <p className='text-sm'>Quantity: </p>
+                   <p className='text-sm'>Quantity:{count} </p>
                 </div>
     
     
@@ -64,7 +70,12 @@ function CheckoutProduct({id, title, price, rating, description, category, image
 
             {/* Right add/remove buttons */}
              <div className='flex flex-col space-y-2 my-auto justify-self-end'>
-                 <button onClick={addItemToBasket} className="button">Add to Cart</button>
+                 <div className='flex items-center justify-between'>
+                     <button onClick={deleteItemFromBasket} className="button">-</button>
+                     <span className='font-medium text-sm'>Quantity:{" "}{count}</span>
+                     <button onClick={addItemToBasket} className="button">+</button>
+                 </div>
+                 {/* <button onClick={addItemToBasket} className="button">Add to Cart</button> */}
                  <button onClick={removeItemFromBasket} className="button">Remove from Cart</button>
              </div>
         </div>

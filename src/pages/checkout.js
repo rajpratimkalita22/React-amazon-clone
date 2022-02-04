@@ -5,12 +5,38 @@ import Head from "next/head";
 import { useState } from "react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import { selectItems,selectTotal } from "../slices/basketSlice";
+import { selectItems, selectCheckoutItems, selectTotal } from "../slices/basketSlice";
 import { useSession } from "next-auth/react";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
+const stripePromise = loadStripe(process.env.stripe_public_key);
+
 function checkout() {
-    const items = useSelector(selectItems);    // items has the product id and details
+    const Checkoutitems = useSelector(selectCheckoutItems);    // array having non-duplicated items.
+    const items = useSelector(selectItems); // array having repeated items.
     const total = useSelector(selectTotal);
     const {data: session} = useSession();
+
+    const createCheckoutSession = async () => {
+      const stripe = await stripePromise; // if we do not use await operator it will return just a promise instead of the resolved one.
+
+      // call the backend to create a checkout session..
+      const checkoutSession = await axios.post('/api/create-checkout-session', 
+      {            
+        items: items,                               // These 2 props are the body
+        email: session.user.email
+      });
+
+      // Redirect the user/customer to Stripe checkout
+      const result = await stripe.redirectToCheckout({
+          sessionId: checkoutSession.data.id
+      });
+
+      if(result.error) {
+        alert(result.error.message);  //A human-readable message providing more details about the error. For card errors, these messages can be shown to your users.
+      }
+    };
+
     return (
      <div className="bg-gray-300">
             
@@ -40,7 +66,7 @@ function checkout() {
                     </h1>
                       {/* we'll map here from cart items */}
 
-                     {items.map((item, i) => (
+                     {Checkoutitems.map((item, i) => (
                        <CheckoutProduct
                           key={i}         
                           id={item.id}
@@ -51,6 +77,7 @@ function checkout() {
                           category={item.category}
                           image={item.image}
                           hasPrime={item.hasPrime}
+                          count={item.count}
                         />
                      ))}
 
@@ -68,7 +95,14 @@ function checkout() {
                   </span>
                 </h2>
 
-                <button disabled={true} className={`button mt-2 ${!session && 'from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed'}`}>
+                <button
+                 role="link"
+                 onClick={createCheckoutSession}
+                 disabled={!session} 
+                 className={`button mt-2 ${
+                   !session && 'from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed'
+                   }`}
+                >
                   {!session ? "Sign in to checkout" : "Proceed to checkout"}
                 </button>
               </>

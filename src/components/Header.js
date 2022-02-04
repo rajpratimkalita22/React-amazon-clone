@@ -29,7 +29,12 @@ function Header() {
 
             {/* Search */}
             <div className="hidden sm:flex items-center rounded-md h-10 flex-grow bg-yellow-400 hover:bg-yellow-500 cursor-pointer">
-                <input className="p-2 h-full w-6 flex-grow flex-shrink rounded-l-md focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-transparent px-4 " type="text" />
+                <input 
+                  type="text" 
+                  name="text"
+                  placeholder="Search in products listed below..." 
+                  className="p-2 h-full w-6 flex-grow flex-shrink rounded-l-md focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-transparent px-4 "
+                />
                 <SearchIcon className="h-12 p-4" />
             </div> 
 
@@ -42,7 +47,7 @@ function Header() {
                   <p className="font-bold md:text-sm">Account & Lists </p>
               </div>
 
-              <div className="link">
+              <div onClick={() => router.push('/orders')} className="link">
                   <p>Returns</p>
                   <p className="font-bold md:text-sm">& Orders</p>
               </div>

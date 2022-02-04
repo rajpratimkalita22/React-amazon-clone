@@ -19,6 +19,7 @@ function Product({ id, title, price, description, category, image }) {
    const [hasPrime] = useState(Math.random() < 0.5) 
    
    const addItemToBasket = () => {
+      let count = 1;
       const product = {  // get the product details and push it to redux store and then extract it in checkout component.
         id,
         title,
@@ -28,6 +29,7 @@ function Product({ id, title, price, description, category, image }) {
         category,
         image,
         hasPrime,
+        count,
       };
 
       // Sending the product as an action to the REDUX store...the basket slice
