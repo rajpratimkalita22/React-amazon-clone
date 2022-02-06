@@ -4,6 +4,7 @@ import { StarIcon } from '@heroicons/react/solid';
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
 import { addToBasket } from "../slices/basketSlice";
+import toast, { Toaster } from 'react-hot-toast';
 
 const MAX_RATING = 5;
 const MIN_RATING = 1;
@@ -16,7 +17,7 @@ function Product({ id, title, price, description, category, image }) {
    );
    
    // to display amazon prime on few selected products
-   const [hasPrime] = useState(Math.random() < 0.5) 
+   const [hasPrime] = useState(Math.random() < 0.5)
    
    const addItemToBasket = () => {
       let count = 1;
@@ -30,14 +31,17 @@ function Product({ id, title, price, description, category, image }) {
         image,
         hasPrime,
         count,
-      };
+      };     
 
       // Sending the product as an action to the REDUX store...the basket slice
-      dispatch(addToBasket(product));
+       dispatch(addToBasket(product));
+       toast.success('Succesfully added!');
+     
    }
 
    return (
      <div className="relative flex flex-col m-5 bg-white z-30 p-10">
+       <div className="top-right flex flex-col"><Toaster/></div>
         <p className="absolute top-2 right-2 text-xs italic text-gray-400">{category}</p>   
 
         <Image 
