@@ -22,16 +22,11 @@ function CheckoutProduct({id, title, price, rating, description, category, image
 
         // Push item into redux
         dispatch(addToBasket(product));
-        toast.success('Successfully added!')
     };
 
     const deleteItemFromBasket = () => {
         //delete an item out of 2 or 3 from redux
-        dispatch(deleteFromBasket({count, id}))
-        if(count > 1) 
-         toast.success('item deleted!')
-        else 
-         toast.error('This didnt work')     
+        dispatch(deleteFromBasket({count, id}))  
     }
 
     const removeItemFromBasket = () => {
