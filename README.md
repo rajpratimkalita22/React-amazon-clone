@@ -24,5 +24,5 @@ Run commands
 
 ## Deployed in Vercel
  https://react-amazon-clone-sand.vercel.app/
-
+Note - Please run the above URL in Edge or Firefox browser. Due to security reasons it has been blocked in chrome browser.
 
